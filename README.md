@@ -1,5 +1,10 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### Introduction
+
+This project aims to finalize the second part of the Udacity course (Project Reading).
+This project also will allow users to post content in pre-defined categories, comment on their own posts and those of other users, and vote on posts and comments. Users can edit and delete posts and comments.
+
 ## Available Scripts
 
 In the project directory, you can run:

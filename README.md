@@ -2,11 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Introduction
 
-<<<<<<< HEAD
 This project aims to finalize the second part of the Udacity course (Project Reading).
-=======
-This project aims to finalize the second part of the Udacity course. (Project Reading)
->>>>>>> 206f550923e934ebac277c6f7a6a02e895a9265d
 This project also will allow users to post content in pre-defined categories, comment on their own posts and those of other users, and vote on posts and comments. Users can edit and delete posts and comments.
 
 ## Available Scripts

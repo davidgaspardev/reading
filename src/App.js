@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { apiPath as path, getData } from './util/api';
 
 class App extends Component {
   render() {
+
+    getData(data => console.log(`(${typeof data}) DATA: `, data), path.CATEGORIES);
+
     return (
       <div className="App">
         <header className="App-header">

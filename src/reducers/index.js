@@ -17,10 +17,11 @@ function posts(state = initialState, actions) {
 
   switch(actions.type) {
     case ADD_POSTS:
+
       let categories = Object.keys(state);
 
       for(let i = 0; i < categories.length; i++) {
-        state[categories[i]] = state[categories[i]] > 0 && state[categories[i]].filter( item => {
+        state[categories[i]] = state[categories[i]].length <= 0 ? [] : state[categories[i]].filter( item => {
           let isThere = false;
 
           posts.forEach(itemPost => {
@@ -31,9 +32,11 @@ function posts(state = initialState, actions) {
 
         });
 
-        state[categories[i]].concat(posts.filter(({ category }) => category === categories[i]));
+        state[categories[i]] = state[categories[i]].concat(posts.filter(({ category }) => category === categories[i]));
 
       }
+
+      console.log('AQUI: ', state);
 
       return state;
 
@@ -50,7 +53,7 @@ function comments(state = initialState, action) {
       let categories = Object.keys(state);
 
       for(let i = 0; i < categories.length; i++) {
-        state[categories[i]] = state[categories[i]] > 0 && state[categories[i]].filter( item => {
+        state[categories[i]] = state[categories[i]].length <= 0 ? [] : state[categories[i]].filter( item => {
           let isThere = false;
 
           comments.forEach(itemPost => {
@@ -61,7 +64,7 @@ function comments(state = initialState, action) {
 
         });
 
-        state[categories[i]].concat(posts.filter(({ category }) => category === categories[i]));
+        state[categories[i]] = state[categories[i]].concat(posts.filter(({ category }) => category === categories[i]));
 
       }
 

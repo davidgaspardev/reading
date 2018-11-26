@@ -4,10 +4,12 @@
  * Path: PROJECT/src/components/index.js
  */
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addPosts, addComments } from '../actions';
 import { apiPath as path, getData } from '../util/api';
 import './index.css';
 
-export default class Root extends Component {
+class Root extends Component {
 
   constructor(props) {
     super(props)
@@ -16,23 +18,20 @@ export default class Root extends Component {
   }
 
   state = {
-    categories: null
+    categories: Object.keys(this.props.posts)
   }
 
   renderCategories() {
     const { categories } = this.state;
 
-    if(categories !== null) return categories.map((item, index) => (<h2 key={index} >{item.name}</h2>));
+    if(categories !== null) return categories.map((item, index) => (<h2 key={index} >{item}</h2>));
 
   }
 
   render() {
     const { renderCategories, logger } = this;
 
-    logger('ROOT COMPONENT', () => {
-      console.info('Props: ', this.props);
-      console.info('State: ', this.state);
-    });
+    logger('ROOT COMPONENT', () => { console.info('Props: ', this.props); console.info('State: ', this.state); });
 
     return (
       <div>
@@ -43,10 +42,10 @@ export default class Root extends Component {
   }
 
   componentDidMount() {
-    const { categories } = this.state;
+    const { insertPosts } = this.props;
 
-    // If categories is empty
-    if(categories === null) getData(data => { this.setState({ categories: data.categories}) }, path.CATEGORIES);
+    getData((data) => insertPosts(data), path.POSTS);
+
   }
 
   logger(title, middleFunction) {
@@ -56,3 +55,19 @@ export default class Root extends Component {
   }
 
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    insertPosts: (data) => dispatch(addPosts(data)),
+    insertComments: (data) => dispatch(addComments(data))
+  }
+}
+
+function mapStateToProps({ posts, comments }) {
+  return {
+    posts,
+    comments
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root);

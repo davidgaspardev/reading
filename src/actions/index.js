@@ -9,13 +9,13 @@ export const ADD_COMMENTS = 'ADD_COMMENTS';
 export function addPosts(posts) {
   return {
     type: ADD_POSTS,
-    posts
+    posts: Array.isArray(posts) ? posts : []
   }
 }
 
 export function addComments(comment) {
   return {
     type: ADD_COMMENTS,
-    comment
+    comment: Array.isArray(comment) ? comment : []
   }
 }

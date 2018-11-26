@@ -3,33 +3,19 @@
  * By David Corrêa Gaspar (davidgaspar.dev@gmail.com)
  * Path: PROJECT/src/actions/index.js
  */
-const ADD_POSTS = 'ADD_POSTS';
-const ADD_COMMENT = 'ADD_COMMENT';
+export const ADD_POSTS    = 'ADD_POSTS';
+export const ADD_COMMENTS = 'ADD_COMMENTS';
 
-export function addPosts({ id, timestamp, title, body, author, category, voteScore, deleted }) {
+export function addPosts(posts) {
   return {
     type: ADD_POSTS,
-    id,
-    timestamp,
-    title,
-    body,
-    author,
-    category,
-    voteScore,
-    deleted
+    posts
   }
 }
 
-export function addComment({ id, parentId, timestamp, body, author, voteScore, deleted, parentDeleted }) {
+export function addComments(comment) {
   return {
-    type: ADD_COMMENT,
-    id,
-    parentId,
-    timestamp,
-    body,
-    author,
-    voteScore,
-    deleted,
-    parentDeleted
+    type: ADD_COMMENTS,
+    comment
   }
 }

@@ -3,78 +3,39 @@
  * By David Corrêa Gaspar (davidgaspar.dev@gmail.com)
  * Path: PROJECT/src/reducers/index.js
  */
-import { combineReducers } from 'redux';
-import { ADD_POSTS, ADD_COMMENTS } from '../actions';
+//import { combineReducers } from 'redux';
+import { ADD_POST } from '../actions';
 
-const initialState = {
-  react: [],
-  redux: [],
-  udacity: []
+const initialPostsState = {
+  posts: {
+    react: [],
+    redux: [],
+    udacity: []
+  }
 }
 
-function posts(state = initialState, actions) {
-  const { posts } = actions;
+export default function reducesPost(state = initialPostsState, actions) {
+
+  const { posts } = state;
+  const { post  } = actions;
 
   switch(actions.type) {
-    case ADD_POSTS:
+    case ADD_POST:
 
-      let categories = Object.keys(state);
+      let categories = Object.keys(posts);
 
       for(let i = 0; i < categories.length; i++) {
-        state[categories[i]] = state[categories[i]].length <= 0 ? [] : state[categories[i]].filter( item => {
-          let isThere = false;
-
-          posts.forEach(itemPost => {
-            if(item.id === itemPost.id) isThere = true;
-          });
-
-          return !isThere;
-
-        });
-
-        state[categories[i]] = state[categories[i]].concat(posts.filter(({ category }) => category === categories[i]));
-
+        let postsCurrent = posts[categories[i]];
+        postsCurrent = postsCurrent.length <= 0 ? [] : postsCurrent.filter( postCurrent => postCurrent.id !== post.id);
       }
 
-      console.log('AQUI: ', state);
+      posts[post.category].push(post);
 
-      return state;
+      //console.log('ADD_POSTS | REDUCER: ', state);
+
+      return { ...state, posts };
 
     default:
       return state;
   }
 }
-
-function comments(state = initialState, action) {
-  const { comments } = action;
-
-  switch(action.type) {
-    case ADD_COMMENTS:
-      let categories = Object.keys(state);
-
-      for(let i = 0; i < categories.length; i++) {
-        state[categories[i]] = state[categories[i]].length <= 0 ? [] : state[categories[i]].filter( item => {
-          let isThere = false;
-
-          comments.forEach(itemPost => {
-            if(item.id === itemPost.id) isThere = true;
-          });
-
-          return !isThere;
-
-        });
-
-        state[categories[i]] = state[categories[i]].concat(posts.filter(({ category }) => category === categories[i]));
-
-      }
-
-      return state;
-
-    default:
-      return state;
-
-  }
-
-}
-
-export default combineReducers({ posts, comments });

@@ -5,46 +5,91 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addPosts, addComments } from '../actions';
-import { apiPath as path, getData } from '../util/api';
+import { addPostsAsync } from '../actions';
 import './index.css';
 
 class Root extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
+
+    // Initilize state
+    this.state = {
+      categories: Object.keys(this.props.posts),
+      isLoading: true
+    }
 
     this.renderCategories = this.renderCategories.bind(this);
-  }
+    this.renderPosts      = this.renderPosts.bind(this);
 
-  state = {
-    categories: Object.keys(this.props.posts)
+    this.Header = this.Header.bind(this);
+    this.Main   = this.Main.bind(this);
+
   }
 
   renderCategories() {
     const { categories } = this.state;
 
-    if(categories !== null) return categories.map((item, index) => (<h2 key={index} >{item}</h2>));
+    if(categories !== null) return categories.map((item, index) => (<li key={index} >{item}</li>));
+
+  }
+
+  renderPosts() {
+    const { isLoading } = this.state;
+
+    if(isLoading) return (<div className='posts-loading'/>)
 
   }
 
   render() {
-    const { renderCategories, logger } = this;
+    const { logger, Header, Main } = this;
 
-    logger('ROOT COMPONENT', () => { console.info('Props: ', this.props); console.info('State: ', this.state); });
+    logger('ROOT COMPONENT', () => {
+      console.info('Props: ', this.props, '\nState: ', this.state);
+    });
 
     return (
-      <div>
-        <h1>Hello World!</h1>
-        { renderCategories() }
+      <div className='backgraund'>
+        <Header title='Reading' />
+        <Main />
       </div>
     );
   }
 
-  componentDidMount() {
-    const { insertPosts } = this.props;
+  /**
+   * ============ Functinal Stateless Components ============
+   * Local components(stateless) for UI composition
+   */
 
-    getData((data) => insertPosts(data), path.POSTS);
+  Header({ title }) {
+    const { renderCategories } = this;
+
+    return (
+      <header>
+        <h1>{title}</h1>
+
+        <nav>
+          <ul> { renderCategories() } </ul>
+        </nav>
+
+      </header>
+     );
+  }
+
+  Main() {
+    const { renderPosts } = this;
+
+    return (
+      <main>
+        { renderPosts() }
+      </main>
+    );
+  }
+
+  componentDidMount() {
+    const { getPostsAsync } = this.props;
+
+    getPostsAsync();
 
   }
 
@@ -58,16 +103,12 @@ class Root extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    insertPosts: (data) => dispatch(addPosts(data)),
-    insertComments: (data) => dispatch(addComments(data))
+    getPostsAsync: () => dispatch(addPostsAsync()),
   }
 }
 
-function mapStateToProps({ posts, comments }) {
-  return {
-    posts,
-    comments
-  }
+function mapStateToProps({ posts }) {
+  return { posts }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);

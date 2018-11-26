@@ -3,19 +3,32 @@
  * By David Corrêa Gaspar (davidgaspar.dev@gmail.com)
  * Path: PROJECT/src/actions/index.js
  */
-export const ADD_POSTS    = 'ADD_POSTS';
-export const ADD_COMMENTS = 'ADD_COMMENTS';
+import { apiPath as path, getData } from '../util/api';
 
-export function addPosts(posts) {
-  return {
-    type: ADD_POSTS,
-    posts: Array.isArray(posts) ? posts : []
-  }
+export const ADD_POST    = 'ADD_POST';
+
+export function addPostsAsync() {
+  return dispatch => getData(posts => {
+
+    // Get all posts without comments
+    posts.forEach(post => {
+
+      // Get comments of the post
+      getData(comments => {
+
+        post.comments = comments;
+
+        dispatch(addPost(post));
+
+      }, `${path.POSTS}/${post.id + path.COMMENTS}`);
+
+    });
+  }, path.POSTS);
 }
 
-export function addComments(comment) {
+export function addPost(post) {
   return {
-    type: ADD_COMMENTS,
-    comment: Array.isArray(comment) ? comment : []
+    type: ADD_POST,
+    post
   }
 }

@@ -35,11 +35,11 @@ async function apiData(callback,  path, method) {
 
   // Building the URI
   uri = buildUri(path);
-  console.log('URI: ', uri);
+  //console.log('URI: ', uri);
 
   // Building protocol
   protocol = buildProtocol(method);
-  console.log('PROTOCOL: ', protocol);
+  //console.log('PROTOCOL: ', protocol);
 
   // Setting request HTTP
   const response = await fetch(uri, protocol);

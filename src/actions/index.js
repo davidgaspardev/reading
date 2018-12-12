@@ -18,6 +18,8 @@ export function addPostsAsync() {
 
         post.comments = comments;
 
+        console.log(post);
+
         dispatch(addPost(post));
 
       }, `${path.POSTS}/${post.id + path.COMMENTS}`);

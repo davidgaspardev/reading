@@ -4,6 +4,7 @@
 }
 
 header {
+  background-color: white;
   position: fixed;
   top: 0;
   right: 0;
@@ -36,8 +37,9 @@ header li:hover {
 }
 
 main {
-  max-width: 1200px;
+  max-width: 850px;
   width: 100%;
+  margin: 110px auto;
 }
 
 .posts-loading {
@@ -49,4 +51,29 @@ main {
   top: calc(50% - 50px);
   left: calc(50% - 50px);
   z-index: 0;
+}
+
+.post {
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px gray;
+}
+
+.post .line {
+  margin: 5px auto;
+}
+
+.post img {
+  width: 25px;
+  height: 25px;
+}
+
+.post-options {
+  display: flex;
+  flex-direction: row;
+}
+
+.post-options div {
+  width: 20%;
 }

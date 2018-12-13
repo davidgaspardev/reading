@@ -19,6 +19,7 @@ export default class Root extends PureComponent {
     // Initilize state
     this.state = {
       categories: [],
+      currentCategory: null,
       posts: null,
       isLoading: true,
       lastUpdate: Date.now()
@@ -47,35 +48,54 @@ export default class Root extends PureComponent {
 
     this.renderCategories = this.renderCategories.bind(this);
     this.renderPosts      = this.renderPosts.bind(this);
+    //this.toFilterList     = this.toFilterList.bind(this);
+
 
     //this.Header = this.Header.bind(this);
     //this.Main   = this.Main.bind(this);
 
   }
 
-  componentWillReceiveProps(newProps) {
-    console.log(newProps);
+  toFilterList(category) {
+
+    return () => {
+      this.setState(prevState => {
+        if(prevState.currentCategory !== category) return { currentCategory: category };
+      });
+
+    }
   }
 
   renderCategories() {
     const { categories } = this.state;
 
-    if(categories.length > 0) return categories.map((item, index) => (<li key={index} >{item}</li>));
+    if(categories.length > 0) return categories.map((category, index) => (<li key={index} onClick={this.toFilterList(category)} >{category}</li>));
 
   }
 
   renderPosts() {
-    const { posts, categories, isLoading } = this.state;
+    const { posts, categories, currentCategory, isLoading } = this.state;
 
     if(isLoading) return (<div className='posts-loading'/>);
 
     let showPosts = [];
 
-    for(let i = 0; i < categories.length; i++) {
-      showPosts = showPosts.concat(posts[categories[i]]);
-    }
-    console.log(showPosts);
+    // To check if the category was selected
+    if(currentCategory === null) {
 
+      // If not: list all
+      for(let i = 0; i < categories.length; i++) {
+        showPosts = showPosts.concat(posts[categories[i]]);
+      }
+
+    }else {
+
+      // if yes: list category selected
+      showPosts = posts[currentCategory];
+
+    }
+
+    // Return list of posts
     return showPosts.map((item, index) => (<Post {...item} key={index} />))
 
   }
